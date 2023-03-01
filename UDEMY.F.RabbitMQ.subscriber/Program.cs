@@ -20,14 +20,17 @@ var channel = connection.CreateModel();
 //silmesseniz publisher bu kuyruğu oluşturmassa  subscriber bu kuruğu oluşturur ve uygulamada herhangibi bir hata almassınız 
 //eğer pıblisherın bu kuyruğu gerçekten oluşturduğundan eminseniz kuyruğu silebilirsiniz 
 
-var randomQueneName = "log-database-save-queue"; //channel.QueueDeclare().QueueName;
+//var randomQueneName = //"log-database-save-queue";
+ //var randomQueneName = channel.QueueDeclare().QueueName;
 
 //quenebinsla beraber uygulama her ayağa kalktığında bir kuyruk oluşacak ama uygulama down olduğunda ilgili kuyruk silinecek
 //eğer şöyle yapsaydım
-channel.QueueDeclare(randomQueneName,true,false,false);
+
+//channel.QueueDeclare(randomQueneName,true,false,false);
+
 //böyle yapasam ilgili subscriber ilgili insteans kapansa dahi kuruk durur ben durmasını istemiyorum
 
-channel.QueueBind(randomQueneName, "logs-fanout", "", null);
+//channel.QueueBind(randomQueneName, "logs-fanout", "", null);
 
 
 
@@ -44,7 +47,8 @@ var consumer = new EventingBasicConsumer(channel);
 //autoAck->true verirsek rabbitmq mesaj verdiğinde hemen siliyordu
 //autoAck->False verirsek hemen silme ben seni haberdar edicem diyorum
 
-channel.BasicConsume(randomQueneName, autoAck: false, consumer: consumer);
+var queueName = "direct-queue-Info";
+
 
 Console.WriteLine("logları dinliyor.....");
 
@@ -55,12 +59,13 @@ consumer.Received += (object? sender, BasicDeliverEventArgs e) =>
     Thread.Sleep(1000);
 
     Console.WriteLine("Gelen Mesaj:" + messsage);
+  //  File.AppendAllText("log-critical.txt", messsage+ "\n");
 
     //BasicAck()methodum var bu methoda diyorimki sen ilgili mesajı artık silebilirsin (DeliveryTag) bana ulaştırılan tagı rabbitmqye gönderiyorum bu rabbitmq hangi tagla bu emsajı ulaştırmışsa ilgili mesajı bulup kuyruktan siliyor,
     //multiple değeri var->true dersek memory işlenmiş ama rabbitmqye gitmemiş başka mesajlarda varsa onun bilgilerini rabiitmqye haberdar eder biz tek mesaj işliyoruz false dedik sadce ilgili mesajın durumunu bilidr diyoruz
     //eğe hata alırsak bu mesajı göndermeyiz rabbitmq haber vemreyiz rabbitmq da haber edilmeyen mesajları belli süre sonra tekrar başka bir subscriber a gönderir
     channel.BasicAck(e.DeliveryTag,multiple:false);
 };
-
+channel.BasicConsume(queueName, autoAck: false, consumer: consumer);
 
 Console.ReadLine();
