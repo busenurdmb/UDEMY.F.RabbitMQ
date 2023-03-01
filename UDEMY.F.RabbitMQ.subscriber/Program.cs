@@ -20,6 +20,17 @@ var channel = connection.CreateModel();
 //silmesseniz publisher bu kuyruğu oluşturmassa  subscriber bu kuruğu oluşturur ve uygulamada herhangibi bir hata almassınız 
 //eğer pıblisherın bu kuyruğu gerçekten oluşturduğundan eminseniz kuyruğu silebilirsiniz 
 
+var randomQueneName = "log-database-save-queue"; //channel.QueueDeclare().QueueName;
+
+//quenebinsla beraber uygulama her ayağa kalktığında bir kuyruk oluşacak ama uygulama down olduğunda ilgili kuyruk silinecek
+//eğer şöyle yapsaydım
+channel.QueueDeclare(randomQueneName,true,false,false);
+//böyle yapasam ilgili subscriber ilgili insteans kapansa dahi kuruk durur ben durmasını istemiyorum
+
+channel.QueueBind(randomQueneName, "logs-fanout", "", null);
+
+
+
 //kaç kaç göndereceğiz 
 //prefetchSize->boyut ver diyor o deyince bana herhangi bir boyutttaki mesajı gönderebilirsin
 //prefetchCount->kaç kaç mesajlar gelsin her bir subscriber a 1 er 1 er gelsin
@@ -32,8 +43,10 @@ channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 var consumer = new EventingBasicConsumer(channel);
 //autoAck->true verirsek rabbitmq mesaj verdiğinde hemen siliyordu
 //autoAck->False verirsek hemen silme ben seni haberdar edicem diyorum
-channel.BasicConsume("helloo-queue", autoAck: false, consumer: consumer);
 
+channel.BasicConsume(randomQueneName, autoAck: false, consumer: consumer);
+
+Console.WriteLine("logları dinliyor.....");
 
 consumer.Received += (object? sender, BasicDeliverEventArgs e) =>
 {

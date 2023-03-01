@@ -11,17 +11,18 @@ var connectionFactory = new ConnectionFactory()
 var connection = connectionFactory.CreateConnection();
 
 var channel = connection.CreateModel();
-
-channel.QueueDeclare(queue: "helloo-queue", durable: true, exclusive: false, autoDelete: false);
+//durable->true fiziksel olarak kaydedilsisın resart attığımda kaybolmasın
+channel.ExchangeDeclare(exchange: "logs-fanout", durable: true, type: ExchangeType.Fanout);
+//channel.QueueDeclare(queue: "helloo-queue", durable: true, exclusive: false, autoDelete: false);
 
 //50 tane mesaj oluşturmak için döngüye alıyoruz
 Enumerable.Range(1,50).ToList().ForEach(x =>
 {
-string message = $"Message{x}";
+string message = $"log{x}";
 
 var bytemesage = Encoding.UTF8.GetBytes(message);
 
-channel.BasicPublish(exchange: string.Empty, "helloo-queue", basicProperties: null, bytemesage);
+channel.BasicPublish("logs-fanout","", basicProperties: null, bytemesage);
 
 Console.WriteLine($"Mesaj Gönderilmiştir{message}");
 });
