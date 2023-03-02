@@ -10,7 +10,7 @@ var connectionFactory = new ConnectionFactory()
 
 };
 
-var connection = connectionFactory.CreateConnection();
+using var connection = connectionFactory.CreateConnection();
 
 var channel = connection.CreateModel();
 
@@ -47,8 +47,11 @@ var consumer = new EventingBasicConsumer(channel);
 //autoAck->true verirsek rabbitmq mesaj verdiğinde hemen siliyordu
 //autoAck->False verirsek hemen silme ben seni haberdar edicem diyorum
 
-var queueName = "direct-queue-Info";
-
+//var queueName = "direct-queue-Info";
+var queueName = channel.QueueDeclare().QueueName;
+//sade oratsında error olan başı sonu önemli değil
+var routkey = "*.Error.*";
+channel.QueueBind(queueName,"logs-topic",routkey,null);
 
 Console.WriteLine("logları dinliyor.....");
 
