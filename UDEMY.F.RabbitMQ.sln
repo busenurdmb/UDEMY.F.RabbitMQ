@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDEMY.F.RabbitMQ.publisher", "UDEMY.F.RabbitMQ.publisher\UDEMY.F.RabbitMQ.publisher.csproj", "{78FCBA7A-616B-4BA9-9C3C-66D231DC85A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UDEMY.F.RabbitMQ.publisher", "UDEMY.F.RabbitMQ.publisher\UDEMY.F.RabbitMQ.publisher.csproj", "{78FCBA7A-616B-4BA9-9C3C-66D231DC85A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDEMY.F.RabbitMQ.subscriber", "UDEMY.F.RabbitMQ.subscriber\UDEMY.F.RabbitMQ.subscriber.csproj", "{72AFA547-A9DB-48CC-8911-3AFFB22F1E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UDEMY.F.RabbitMQ.subscriber", "UDEMY.F.RabbitMQ.subscriber\UDEMY.F.RabbitMQ.subscriber.csproj", "{72AFA547-A9DB-48CC-8911-3AFFB22F1E03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{88EDB15B-F53E-493D-A655-CD3B2BD1B5E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{72AFA547-A9DB-48CC-8911-3AFFB22F1E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72AFA547-A9DB-48CC-8911-3AFFB22F1E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72AFA547-A9DB-48CC-8911-3AFFB22F1E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88EDB15B-F53E-493D-A655-CD3B2BD1B5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88EDB15B-F53E-493D-A655-CD3B2BD1B5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88EDB15B-F53E-493D-A655-CD3B2BD1B5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88EDB15B-F53E-493D-A655-CD3B2BD1B5E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

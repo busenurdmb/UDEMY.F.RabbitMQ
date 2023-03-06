@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Shared;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 
 var connectionFactory = new ConnectionFactory()
 {
@@ -50,18 +52,25 @@ var consumer = new EventingBasicConsumer(channel);
 //var queueName = "direct-queue-Info";
 var queueName = channel.QueueDeclare().QueueName;
 //sade oratsında error olan başı sonu önemli değil
-var routkey = "*.Error.*";
-channel.QueueBind(queueName,"logs-topic",routkey,null);
+//var routkey = "*.Error.*";
+Dictionary<string,object> headers=new Dictionary<string, object>();
+headers.Add("format", "pdf");
+headers.Add("shape", "a4");
+headers.Add("x-match","all");
+channel.QueueBind(queueName, "header-exchanges", string.Empty,headers);
 
 Console.WriteLine("logları dinliyor.....");
 
 consumer.Received += (object? sender, BasicDeliverEventArgs e) =>
 {
     var messsage = Encoding.UTF8.GetString(e.Body.ToArray());
-
+    
+    
+        Product? product = JsonSerializer.Deserialize<Product>(messsage);
+    
     Thread.Sleep(1000);
-
-    Console.WriteLine("Gelen Mesaj:" + messsage);
+    if(product != null)
+    Console.WriteLine($"Gelen Mesaj:{product.Id}  -{product.Name}-{product.Price}-{product.Stock}");
   //  File.AppendAllText("log-critical.txt", messsage+ "\n");
 
     //BasicAck()methodum var bu methoda diyorimki sen ilgili mesajı artık silebilirsin (DeliveryTag) bana ulaştırılan tagı rabbitmqye gönderiyorum bu rabbitmq hangi tagla bu emsajı ulaştırmışsa ilgili mesajı bulup kuyruktan siliyor,
