@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "UDEMY.F.RabbitMQ.subscriber": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:55229;http://localhost:55234"
+    }
+  }
+}
